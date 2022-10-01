@@ -1,25 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { useAppDispatch, useAppSelector } from "./hooks";
+import { fetchUser } from "./store/actionCreators";
+import { State } from "./store";
 
 function App() {
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state: State) => state.reducers);
+
+  React.useEffect(() => {
+    dispatch(fetchUser());
+  }, [dispatch]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className="user">
+        <h1>Thông tin user:</h1>
+      </div>
+      {user?.users?.map((item, i) => (
+        <div key={i}>
+          <h2>{item.username}</h2>
+          <h3>{item.email}</h3>
+        </div>
+      ))}
+    </>
   );
 }
 
